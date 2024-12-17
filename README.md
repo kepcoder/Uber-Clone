@@ -1,31 +1,33 @@
-# Documentation: `/users/register` Endpoint
+# Documentation: `/users/register` and `/users/login` Endpoints
 
-## Endpoint Description
-The `/users/register` endpoint allows users to register by providing their first name, last name, email, and password. It performs server-side validation to ensure the data integrity and returns a token along with user details upon successful registration.
+## 1. `/users/register` Endpoint
+
+### Endpoint Description
+The `/users/register` endpoint allows users to register by providing their first name, last name, email, and password. It performs server-side validation to ensure data integrity and returns a token along with user details upon successful registration.
 
 ---
 
-## HTTP Method
+### HTTP Method
 **POST**
 
 ---
 
-## Endpoint URL
+### Endpoint URL
 `/users/register`
 
 ---
 
-## Request Body Format
+### Request Body Format
 The endpoint expects a JSON payload with the following structure:
 
-### Required Fields
+#### Required Fields
 - **fullname** (object)
   - **firstName** (string, required): Must be at least 3 characters long.
   - **lastName** (string, optional): If provided, must be at least 3 characters long.
 - **email** (string, required): Must be a valid email address.
 - **password** (string, required): Must be at least 6 characters long.
 
-### Example Request Body
+#### Example Request Body
 ```json
 {
     "fullname": {
@@ -39,12 +41,12 @@ The endpoint expects a JSON payload with the following structure:
 
 ---
 
-## Response
+### Response
 
-### Success Response
+#### Success Response
 If the registration is successful, the server responds with a **200 OK** status code and returns the following JSON structure:
 
-#### Example Success Response
+##### Example Success Response
 ```json
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -60,12 +62,12 @@ If the registration is successful, the server responds with a **200 OK** status 
 }
 ```
 
-### Error Responses
+#### Error Responses
 
-#### Validation Error
+##### Validation Error
 If the input validation fails, the server responds with a **400 Bad Request** status code and an array of validation error messages:
 
-#### Example Validation Error Response
+##### Example Validation Error Response
 ```json
 {
     "errors": [
@@ -88,15 +90,105 @@ If the input validation fails, the server responds with a **400 Bad Request** st
 }
 ```
 
-#### Missing Fields Error
+##### Missing Fields Error
 If required fields are missing, the server responds with a **400 Bad Request** status code:
 
-#### Example Missing Fields Error Response
+##### Example Missing Fields Error Response
 ```json
 {
     "errors": [
         {
             "msg": "All fields are required!"
+        }
+    ]
+}
+```
+
+---
+
+## 2. `/users/login` Endpoint
+
+### Endpoint Description
+The `/users/login` endpoint allows users to authenticate themselves using their email and password. If the credentials are correct, the server returns a token and user details.
+
+---
+
+### HTTP Method
+**POST**
+
+---
+
+### Endpoint URL
+`/users/login`
+
+---
+
+### Request Body Format
+The endpoint expects a JSON payload with the following structure:
+
+#### Required Fields
+- **email** (string, required): Must be a valid email address.
+- **password** (string, required): Must be at least 6 characters long.
+
+#### Example Request Body
+```json
+{
+    "email": "johndoe@example.com",
+    "password": "123456"
+}
+```
+
+---
+
+### Response
+
+#### Success Response
+If the login is successful, the server responds with a **200 OK** status code and returns the following JSON structure:
+
+##### Example Success Response
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+        "_id": "64a7b8c5d4c0c133f8b9e123",
+        "fullname": {
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        "email": "johndoe@example.com",
+        "socketId": null
+    }
+}
+```
+
+#### Error Responses
+
+##### Invalid Credentials
+If the email or password is incorrect, the server responds with a **401 Unauthorized** status code:
+
+##### Example Invalid Credentials Response
+```json
+{
+    "message": "Invalid email or password"
+}
+```
+
+##### Validation Error
+If the input validation fails, the server responds with a **400 Bad Request** status code:
+
+##### Example Validation Error Response
+```json
+{
+    "errors": [
+        {
+            "msg": "Invalid Email",
+            "param": "email",
+            "location": "body"
+        },
+        {
+            "msg": "Password must be greater than 6 characters",
+            "param": "password",
+            "location": "body"
         }
     ]
 }
