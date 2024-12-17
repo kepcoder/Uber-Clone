@@ -22,4 +22,4 @@ module.exports.registerUser = async (req, res, next) => {
     const token = user.generateAuthToken()
     res.status(200).json({token, user})
      
-}
+}   
