@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    box-sizing: border-box;
+}
+@font-face{
+    font-family: uber1;
+    src: url(./assets/uber1.woff2);
+}
+@font-face{
+    font-family: uber2;
+    src: url(./assets/uber2.woff2);
+}
+@font-face{
+    font-family: uberMoveBold;
+    src: url(./assets/uberMove-Bold.woff2);
+}
+@font-face{
+    font-family: uberMoveregular;
+    src: url(./assets/uberMove-regular.woff2);
+}
+@font-face{
+    font-family: uberMoveTextMedium;
+    src: url(./assets/uberMoveText-Medium.woff2);
+}
+@font-face{
+    font-family: uberMoveTextregular;
+    src: url(./assets/uberMoveText-regular.woff2);
+}
