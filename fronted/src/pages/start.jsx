@@ -3,7 +3,6 @@ import { FaArrowAltCircleRight } from "react-icons/fa";
 import {Link} from "react-router-dom"
 
 const Start = () => { 
-  console.log('hello') 
   return (
     <div className='w-full h-screen flex flex-col bg-[#2532db] justify-between'>
         <div className="upperPart p-5 w-full h-[70%] flex flex-col justify-between aligns-center">

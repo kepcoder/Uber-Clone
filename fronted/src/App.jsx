@@ -10,9 +10,7 @@ import UserProtectedWrapper from './pages/userProtectedWrapper'
 import UserLogout from './pages/userLogout'
 
 
-
 const App = () => {
-
 
   return (
     <div>
