@@ -1,16 +1,14 @@
 import React, { createContext , useState} from 'react'
 export const userDataContext = createContext()
 
-
-
 const UserContext = ({children}) => {
 
 const [ user , setUser] = useState({
-    fullName:{
-        firstName:'shubham',
-        lastName:'singh'
+    fullname:{
+        firstName:'',
+        lastName:''
     },
-    email:'shubham@gmail.com',
+    email:'',
 })
 
   return (

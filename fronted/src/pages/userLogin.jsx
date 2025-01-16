@@ -1,20 +1,49 @@
-import React, {useState } from 'react'
-import {Link} from "react-router-dom"
+import React, {useContext, useEffect, useState } from 'react'
+import {Link, useNavigate} from "react-router-dom"
 import { FaUser } from "react-icons/fa";
+import axios from 'axios';
+import { userDataContext } from '../context/userContext';
 
 
 const UserLogin = () => {
 
 const [email , setEmail] = useState('')
 const [password , setPassword] = useState('')
-const [userData , setUserData] = useState('')
+const [errorMessage, setErrorMessage] = useState('')
+// const [userData , setUserData] = useState('')
  
-const handleSubmit = (e)=>{
+const navigate = useNavigate()
+const [user, setUser] = useContext(userDataContext)
+
+const userToken = localStorage.getItem('Token')
+
+useEffect(()=>{
+  if(userToken){
+    navigate('/home')
+  }
+})
+
+
+const handleSubmit = async (e)=>{
   e.preventDefault()
-   setUserData({
+
+   const userData={
     email:email,
     password:password
-   })
+   }
+   try{ 
+
+   const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData)
+   if(response.status === 200){
+    const data = response.data
+    setUser(data.user)
+    localStorage.setItem('Token',data.token)
+    navigate('/home')
+   }
+   }catch(error){
+       setErrorMessage(error.response.data.message)
+   }
+
   setEmail('')
   setPassword('')
 }
@@ -25,6 +54,7 @@ const handleSubmit = (e)=>{
         <div className='navbar w-full p-'>
           <h4 className='font-[uberMoveBold] text-3xl flex justify-between'>Uber <FaUser /></h4>
         </div>
+          <p className='text-red-500'>{errorMessage}</p>
         <div className="w-full main flex flex-col justify-between mt-10">
           <div className="form">
            <form action="" className='flex flex-col gap-3' onSubmit={(e)=>{handleSubmit(e)}}>
@@ -41,6 +71,7 @@ const handleSubmit = (e)=>{
                 className=' border-2 rounded-lg bg-gray-200 p-2 text-lg '
               />
               <input type="submit"
+                value="login"
                 className='font-[uberMoveBold] mt-4 border-2 rounded-lg bg-black p-3 text-2xl text-white ' />
            </form>
           </div>

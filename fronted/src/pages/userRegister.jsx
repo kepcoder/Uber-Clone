@@ -1,30 +1,56 @@
-import React, { useState } from 'react'
-import {Link} from "react-router-dom"
+import React, { useContext, useState,} from 'react'
+import {Link, useNavigate} from "react-router-dom"
 import { FaUser } from "react-icons/fa";
+import axios from "axios"
+import { userDataContext } from '../context/userContext';
 
 const Userregister = () => {
 
-const[firstName , setFirstName] = useState('')
-const[lastName, setLastName] = useState('')
-const[email , setEmail] = useState('')
-const[password , setPassword] = useState('')
-const[userData , setUserData] = useState('')
+  
+  const[firstName , setFirstName] = useState('')
+  const[lastName, setLastName] = useState('')
+  const[email , setEmail] = useState('')
+  const[password , setPassword] = useState('')
+  const [errorMessage , setErrorMessage] = useState('')
+  const[created , setCreated] = useState('')
+  const[userData , setUserData] = useState('')
+  
+  const [user, setUser] = useContext(userDataContext)
+  const navigate = useNavigate()
 
 
-const handleSubmit = (e)=>{
+const handleSubmit = async (e)=>{
  e.preventDefault()
- setUserData({
-  fullnName:{
-    firstName:firstName,
-    lastName:lastName,
-  },
-  email:email,
-  password:password
- })
+   const newUser = {
+      fullname:{
+        firstName:firstName,
+        lastName:lastName
+      },
+      email:email,
+      password:password
+   }
 
- console.log(firstName, lastName, email, password)
 
- setFirstName('')
+try{
+   const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
+   const data = response.data
+   setUser(data.user)
+   setCreated('Account Created successfully')
+   setTimeout(() => {
+    navigate('/home');
+  }, 1500);
+}catch(err){
+  console.log(err)
+    if(err.response && err.response.data.errors){
+      setErrorMessage(err.response.data.errors.map(val => val.msg))
+    }else if (err.response && err.response.data.message){
+      setErrorMessage(err.response.data.message)
+    }
+}
+
+
+
+ setFirstName('') 
  setLastName('')
  setEmail('')
  setPassword('')
@@ -36,6 +62,8 @@ const handleSubmit = (e)=>{
         <div className='navbar w-full p-'>
           <h4 className='font-[uberMoveBold] text-3xl flex justify-between'>Uber <FaUser /></h4>
         </div>
+        <p className='text-red-500'>{errorMessage}</p>
+        <p className='text-green-600'>{created}</p>
         <h2 className="font-[uber1] text-center text-xl font-bold mt-3">Become A travller On Uber 🫡</h2>
         <div className="w-full main flex flex-col justify-between mt-10">
           <div className="form">
@@ -66,6 +94,7 @@ const handleSubmit = (e)=>{
                 className=' border-2 rounded-lg bg-gray-200 p-2 text-lg '
               />
               <input type="submit"
+                value="Create Account"
                 className='font-[uberMoveBold] mt-4 border-2 rounded-lg bg-black p-3 text-2xl text-white ' />
            </form>
           </div>

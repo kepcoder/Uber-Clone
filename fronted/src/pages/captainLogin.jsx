@@ -1,11 +1,14 @@
-import React, {useState } from 'react'
+import React, {useContext, useState } from 'react'
 import {Link} from "react-router-dom"
 import { RiMotorbikeFill } from "react-icons/ri";
+import { captainDataContext } from '../context/captainContext';
 
 const CaptainLogin = () => {
   const [email , setEmail] = useState('')
   const [password , setPassword] = useState('')
-   
+  const {captain, setCaptain} =  useContext(captainDataContext)
+    console.log(captain)
+
   const handleSubmit = (e)=>{
     e.preventDefault()
     console.log(email)

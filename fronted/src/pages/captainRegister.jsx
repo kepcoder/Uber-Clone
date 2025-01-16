@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import { RiMotorbikeFill } from "react-icons/ri";
-
+import axios from 'axios';
 
 function CaptainRegister() {
 
@@ -10,7 +10,7 @@ function CaptainRegister() {
   const[email , setEmail] = useState('')
   const[password , setPassword] = useState('')
   const[userData , setUserData] = useState('')
-  
+  const navigate = useNavigate()
   
   const handleSubmit = (e)=>{
    e.preventDefault()
@@ -65,6 +65,7 @@ function CaptainRegister() {
                 className=' border-2 rounded-lg bg-gray-200 p-2 text-lg '
               />
               <input type="submit"
+              value="Create Account"
                 className='font-[uberMoveBold] mt-4 border-2 rounded-lg bg-black p-3 text-2xl text-white ' />
            </form>
           </div>
